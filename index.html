@@ -18,109 +18,241 @@
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif']
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.4s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(15px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
                     }
                 }
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        .hide-content { display: none; }
+    </style>
 </head>
 <body class="bg-transparent m-0 p-4 md:p-8 font-sans text-ttnSlate antialiased w-full h-full flex flex-col justify-center">
 
-    <div class="max-w-5xl mx-auto w-full space-y-8">
+    <div class="max-w-5xl mx-auto w-full space-y-10">
         
         <!-- Header Section -->
         <div class="text-center space-y-3">
             <h2 class="text-4xl font-bold text-ttnNavy tracking-tight">The Four Core Skills: OARS</h2>
-            <p class="text-lg text-slate-600">This is how Partnership, Acceptance, Compassion, and Evocation actually get said out loud.</p>
+            <p class="text-lg text-slate-500">This is how Partnership, Acceptance, Compassion, and Evocation actually get said out loud.</p>
         </div>
 
-        <!-- Interactive Tabbed Container -->
-        <div class="w-full border border-slate-300 rounded-xl overflow-hidden shadow-sm bg-[#eaf2fb]">
+        <!-- 4 Tactile Navigation Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             
-            <!-- Tab Navigation -->
-            <div class="flex flex-row border-b border-slate-300">
-                <button onclick="switchTab('O')" id="tab-O" class="flex-1 py-4 px-2 text-center font-medium transition-colors border-r border-slate-300 bg-white text-ttnTrustBlue border-t-4 border-t-ttnTrustBlue">
-                    O — Open Questions
-                </button>
-                <button onclick="switchTab('A')" id="tab-A" class="flex-1 py-4 px-2 text-center font-medium transition-colors border-r border-slate-300 text-slate-600 hover:bg-white/50 hover:text-ttnNavy border-t-4 border-t-transparent">
-                    A — Affirmations
-                </button>
-                <button onclick="switchTab('R')" id="tab-R" class="flex-1 py-4 px-2 text-center font-medium transition-colors border-r border-slate-300 text-slate-600 hover:bg-white/50 hover:text-ttnNavy border-t-4 border-t-transparent">
-                    R — Reflections
-                </button>
-                <button onclick="switchTab('S')" id="tab-S" class="flex-1 py-4 px-2 text-center font-medium transition-colors text-slate-600 hover:bg-white/50 hover:text-ttnNavy border-t-4 border-t-transparent">
-                    S — Summaries
-                </button>
-            </div>
+            <button onclick="switchTab('O')" id="btn-O" class="relative group p-6 rounded-2xl border-2 border-slate-200 bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 text-left overflow-hidden">
+                <div class="relative z-10 flex flex-col gap-2">
+                    <span id="icon-O" class="flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 text-slate-400 font-bold text-2xl transition-colors">O</span>
+                    <span id="text-O" class="font-semibold text-slate-600 transition-colors">Open Questions</span>
+                </div>
+            </button>
 
-            <!-- Tab Content Area -->
-            <div class="p-8 md:p-12 min-h-[200px] flex flex-col justify-center transition-all duration-300">
+            <button onclick="switchTab('A')" id="btn-A" class="relative group p-6 rounded-2xl border-2 border-slate-200 bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 text-left overflow-hidden">
+                <div class="relative z-10 flex flex-col gap-2">
+                    <span id="icon-A" class="flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 text-slate-400 font-bold text-2xl transition-colors">A</span>
+                    <span id="text-A" class="font-semibold text-slate-600 transition-colors">Affirmations</span>
+                </div>
+            </button>
+
+            <button onclick="switchTab('R')" id="btn-R" class="relative group p-6 rounded-2xl border-2 border-slate-200 bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 text-left overflow-hidden">
+                <div class="relative z-10 flex flex-col gap-2">
+                    <span id="icon-R" class="flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 text-slate-400 font-bold text-2xl transition-colors">R</span>
+                    <span id="text-R" class="font-semibold text-slate-600 transition-colors">Reflections</span>
+                </div>
+            </button>
+
+            <button onclick="switchTab('S')" id="btn-S" class="relative group p-6 rounded-2xl border-2 border-slate-200 bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 text-left overflow-hidden">
+                <div class="relative z-10 flex flex-col gap-2">
+                    <span id="icon-S" class="flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 text-slate-400 font-bold text-2xl transition-colors">S</span>
+                    <span id="text-S" class="font-semibold text-slate-600 transition-colors">Summaries</span>
+                </div>
+            </button>
+
+        </div>
+
+        <!-- Dynamic Content Display Area -->
+        <div class="relative w-full rounded-2xl border-2 border-slate-100 bg-white shadow-lg overflow-hidden min-h-[250px] flex items-center">
+            
+            <!-- TTN Watermark Layer -->
+            <div class="absolute inset-0 z-0 bg-[url('Watermark_Background.jpeg')] bg-cover bg-center opacity-10 pointer-events-none"></div>
+            
+            <!-- Giant Background Letter (Updates dynamically) -->
+            <div id="bg-letter" class="absolute -right-10 -bottom-16 text-[250px] font-black text-slate-50 select-none z-0 pointer-events-none transition-all duration-500 transform scale-95 opacity-0"></div>
+
+            <!-- Content Container -->
+            <div class="relative z-10 p-8 md:p-14 w-full">
                 
-                <div id="content-O" class="content-panel space-y-4">
-                    <p class="text-xl text-slate-700">Can't be answered yes or no.</p>
-                    <p class="text-xl text-slate-700">They invite your patient to talk, and to think out loud while they do it.</p>
+                <div id="content-idle" class="flex flex-col items-center justify-center text-center opacity-100 transition-opacity duration-300">
+                    <p class="text-xl font-medium text-slate-400">Select a core skill above to explore.</p>
                 </div>
 
-                <div id="content-A" class="content-panel space-y-4 hidden">
-                    <p class="text-xl text-slate-700">Genuine recognition of a strength or an effort.</p>
-                    <p class="text-xl text-slate-700">Not empty praise. It has to be true, and it has to be specific.</p>
+                <div id="content-O" class="hide-content space-y-4 max-w-3xl">
+                    <p class="text-2xl font-semibold text-ttnNavy">Can't be answered yes or no.</p>
+                    <p class="text-xl text-slate-600 leading-relaxed">They invite your patient to talk, and to think out loud while they do it.</p>
+                    <div id="example-box-O" class="mt-8 p-5 rounded-xl border border-slate-200 bg-slate-50 transition-all duration-500">
+                        <span class="text-xs font-bold text-ttnActionOrange uppercase tracking-widest mb-1.5 block">Clinical Example</span>
+                        <p class="text-lg text-ttnNavy font-medium italic">"How has your breathing been affecting your day-to-day life recently?"</p>
+                    </div>
                 </div>
 
-                <div id="content-R" class="content-panel space-y-4 hidden">
-                    <p class="text-xl text-slate-700">Repeat or rephrase what your patient just said.</p>
-                    <p class="text-xl text-slate-700">It proves you heard it. It also lets them hear it back, often for the first time.</p>
+                <div id="content-A" class="hide-content space-y-4 max-w-3xl">
+                    <p class="text-2xl font-semibold text-ttnNavy">Genuine recognition of a strength or an effort.</p>
+                    <p class="text-xl text-slate-600 leading-relaxed">Not empty praise. It has to be true, and it has to be specific.</p>
+                    <div id="example-box-A" class="mt-8 p-5 rounded-xl border border-slate-200 bg-slate-50 transition-all duration-500">
+                        <span class="text-xs font-bold text-ttnActionOrange uppercase tracking-widest mb-1.5 block">Clinical Example</span>
+                        <p class="text-lg text-ttnNavy font-medium italic">"It takes a lot of effort to even show up to these appointments when you're feeling this frustrated. I appreciate you being here."</p>
+                    </div>
                 </div>
 
-                <div id="content-S" class="content-panel space-y-4 hidden">
-                    <p class="text-xl text-slate-700">Gather several threads of what's been said into one short recap.</p>
-                    <p class="text-xl text-slate-700">Often ends in another open question, keeping the conversation moving.</p>
+                <div id="content-R" class="hide-content space-y-4 max-w-3xl">
+                    <p class="text-2xl font-semibold text-ttnNavy">Repeat or rephrase what your patient just said.</p>
+                    <p class="text-xl text-slate-600 leading-relaxed">It proves you heard it. It also lets them hear it back, often for the first time.</p>
+                    <div id="example-box-R" class="mt-8 p-5 rounded-xl border border-slate-200 bg-slate-50 transition-all duration-500">
+                        <span class="text-xs font-bold text-ttnActionOrange uppercase tracking-widest mb-1.5 block">Clinical Example</span>
+                        <p class="text-lg text-ttnNavy font-medium italic">"You're tired of being lectured about your weight, but you also want to have enough energy to keep up with your granddaughter."</p>
+                    </div>
+                </div>
+
+                <div id="content-S" class="hide-content space-y-4 max-w-3xl">
+                    <p class="text-2xl font-semibold text-ttnNavy">Gather several threads of what's been said into one short recap.</p>
+                    <p class="text-xl text-slate-600 leading-relaxed">Often ends in another open question, keeping the conversation moving.</p>
+                    <div id="example-box-S" class="mt-8 p-5 rounded-xl border border-slate-200 bg-slate-50 transition-all duration-500">
+                        <span class="text-xs font-bold text-ttnActionOrange uppercase tracking-widest mb-1.5 block">Clinical Example</span>
+                        <p class="text-lg text-ttnNavy font-medium italic">"So, to summarize: you know the smoking is an issue, but right now it's your only stress relief at work, and you don't want to give that up until things settle down. Did I get that right?"</p>
+                    </div>
                 </div>
 
             </div>
         </div>
     </div>
 
-    <!-- Hidden Audio Elements -->
+    <!-- Audio Elements -->
     <audio id="audio-O" src="vo_oars_o.wav"></audio>
+    <audio id="audio-O-ex" src="vo_example_o.wav"></audio>
+    
     <audio id="audio-A" src="vo_oars_a.wav"></audio>
+    <audio id="audio-A-ex" src="vo_example_a.wav"></audio>
+    
     <audio id="audio-R" src="vo_oars_r.wav"></audio>
+    <audio id="audio-R-ex" src="vo_example_r.wav"></audio>
+    
     <audio id="audio-S" src="vo_oars_s.wav"></audio>
+    <audio id="audio-S-ex" src="vo_example_s.wav"></audio>
 
     <script>
         let currentAudio = null;
+        let currentExAudio = null;
+        const letters = ['O', 'A', 'R', 'S'];
 
         function switchTab(tabId) {
-            // Stop current audio
+            // Stop audio
             if (currentAudio) {
                 currentAudio.pause();
                 currentAudio.currentTime = 0;
+                // Remove onended listener so it doesn't fire on old tabs
+                currentAudio.onended = null;
+            }
+            if (currentExAudio) {
+                currentExAudio.pause();
+                currentExAudio.currentTime = 0;
             }
 
-            // Reset all tabs to inactive state
-            const tabs = ['O', 'A', 'R', 'S'];
-            tabs.forEach(id => {
-                const tabEl = document.getElementById(`tab-${id}`);
-                const contentEl = document.getElementById(`content-${id}`);
+            // Hide idle state
+            document.getElementById('content-idle').style.display = 'none';
+
+            // Reset all cards and contents
+            letters.forEach(id => {
+                // Button styles
+                const btn = document.getElementById(`btn-${id}`);
+                const icon = document.getElementById(`icon-${id}`);
+                const text = document.getElementById(`text-${id}`);
                 
-                // Style inactive tab
-                tabEl.className = `flex-1 py-4 px-2 text-center font-medium transition-colors text-slate-600 hover:bg-white/50 hover:text-ttnNavy border-t-4 border-t-transparent ${id !== 'S' ? 'border-r border-slate-300' : ''}`;
+                btn.className = "relative group p-6 rounded-2xl border-2 border-slate-200 bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 text-left overflow-hidden";
+                icon.className = "flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 text-slate-400 font-bold text-2xl transition-colors";
+                text.className = "font-semibold text-slate-600 transition-colors";
                 
-                // Hide content
-                contentEl.classList.add('hidden');
+                // Hide content and remove animation
+                const content = document.getElementById(`content-${id}`);
+                content.classList.add('hide-content');
+                content.classList.remove('animate-fade-in-up');
+                
+                // Reset example box highlighting
+                const exBox = document.getElementById(`example-box-${id}`);
+                if(exBox) {
+                    exBox.classList.remove('ring-2', 'ring-ttnActionOrange', 'bg-orange-50', 'shadow-md');
+                    exBox.classList.add('bg-slate-50', 'border-slate-200');
+                }
             });
 
-            // Set active tab styling
-            const activeTab = document.getElementById(`tab-${tabId}`);
-            activeTab.className = `flex-1 py-4 px-2 text-center font-medium transition-colors bg-white text-ttnTrustBlue border-t-4 border-t-ttnTrustBlue ${tabId !== 'S' ? 'border-r border-slate-300' : ''}`;
-            
-            // Show active content
-            document.getElementById(`content-${tabId}`).classList.remove('hidden');
+            // Activate selected card
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            const activeIcon = document.getElementById(`icon-${tabId}`);
+            const activeText = document.getElementById(`text-${tabId}`);
 
-            // Play new audio
+            activeBtn.className = "relative p-6 rounded-2xl border-2 border-ttnTrustBlue bg-blue-50 transition-all duration-300 shadow-md transform -translate-y-1 text-left overflow-hidden ring-4 ring-blue-500/10";
+            activeIcon.className = "flex items-center justify-center w-12 h-12 rounded-full bg-ttnTrustBlue text-white font-bold text-2xl transition-colors shadow-inner";
+            activeText.className = "font-bold text-ttnNavy transition-colors";
+
+            // Update giant background letter with a slight delay for smooth transition
+            const bgLetter = document.getElementById('bg-letter');
+            bgLetter.style.opacity = '0';
+            bgLetter.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                bgLetter.textContent = tabId;
+                bgLetter.style.opacity = '1';
+                bgLetter.style.transform = 'scale(1)';
+            }, 150);
+
+            // Show active content with animation
+            const activeContent = document.getElementById(`content-${tabId}`);
+            activeContent.classList.remove('hide-content');
+            // Small timeout to allow DOM to register the display change before animating
+            setTimeout(() => {
+                activeContent.classList.add('animate-fade-in-up');
+            }, 10);
+
+            // Play audio and sequence the example
             currentAudio = document.getElementById(`audio-${tabId}`);
+            currentExAudio = document.getElementById(`audio-${tabId}-ex`);
+            const activeExBox = document.getElementById(`example-box-${tabId}`);
+
             if (currentAudio) {
-                currentAudio.play().catch(e => console.log("Audio playback requires user interaction first."));
+                currentAudio.play().catch(e => console.log("Audio playback requires interaction."));
+                
+                // Sequence the second voice to play immediately after Dr. Lindsay
+                currentAudio.onended = () => {
+                    // Visually illuminate the example box
+                    if (activeExBox) {
+                        activeExBox.classList.remove('bg-slate-50', 'border-slate-200');
+                        activeExBox.classList.add('ring-2', 'ring-ttnActionOrange', 'bg-orange-50', 'shadow-md');
+                    }
+                    
+                    // Play your voice example
+                    if (currentExAudio) {
+                        currentExAudio.play().catch(e => console.log("Audio playback requires interaction."));
+                        
+                        currentExAudio.onended = () => {
+                            // Dim the box back down shortly after the example finishes
+                            setTimeout(() => {
+                                if (activeExBox) {
+                                    activeExBox.classList.remove('ring-2', 'ring-ttnActionOrange', 'bg-orange-50', 'shadow-md');
+                                    activeExBox.classList.add('bg-slate-50', 'border-slate-200');
+                                }
+                            }, 1500); 
+                        };
+                    }
+                };
             }
         }
     </script>
