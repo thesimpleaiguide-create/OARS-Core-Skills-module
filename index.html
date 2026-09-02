@@ -152,10 +152,14 @@
     <script>
         let currentAudio = null;
         let currentExAudio = null;
+        let sequenceTimeout = null;
         const letters = ['O', 'A', 'R', 'S'];
 
         function switchTab(tabId) {
-            // Stop audio
+            // Stop audio and clear pending sequences
+            if (sequenceTimeout) {
+                clearTimeout(sequenceTimeout);
+            }
             if (currentAudio) {
                 currentAudio.pause();
                 currentAudio.currentTime = 0;
@@ -165,6 +169,7 @@
             if (currentExAudio) {
                 currentExAudio.pause();
                 currentExAudio.currentTime = 0;
+                currentExAudio.onended = null;
             }
 
             // Hide idle state
@@ -230,28 +235,31 @@
             if (currentAudio) {
                 currentAudio.play().catch(e => console.log("Audio playback requires interaction."));
                 
-                // Sequence the second voice to play immediately after Dr. Lindsay
+                // Sequence the second voice to play after a short pause
                 currentAudio.onended = () => {
-                    // Visually illuminate the example box
-                    if (activeExBox) {
-                        activeExBox.classList.remove('bg-slate-50', 'border-slate-200');
-                        activeExBox.classList.add('ring-2', 'ring-ttnActionOrange', 'bg-orange-50', 'shadow-md');
-                    }
                     
-                    // Play your voice example
-                    if (currentExAudio) {
-                        currentExAudio.play().catch(e => console.log("Audio playback requires interaction."));
+                    sequenceTimeout = setTimeout(() => {
+                        // Visually illuminate the example box
+                        if (activeExBox) {
+                            activeExBox.classList.remove('bg-slate-50', 'border-slate-200');
+                            activeExBox.classList.add('ring-2', 'ring-ttnActionOrange', 'bg-orange-50', 'shadow-md');
+                        }
                         
-                        currentExAudio.onended = () => {
-                            // Dim the box back down shortly after the example finishes
-                            setTimeout(() => {
-                                if (activeExBox) {
-                                    activeExBox.classList.remove('ring-2', 'ring-ttnActionOrange', 'bg-orange-50', 'shadow-md');
-                                    activeExBox.classList.add('bg-slate-50', 'border-slate-200');
-                                }
-                            }, 1500); 
-                        };
-                    }
+                        // Play your voice example
+                        if (currentExAudio) {
+                            currentExAudio.play().catch(e => console.log("Audio playback requires interaction."));
+                            
+                            currentExAudio.onended = () => {
+                                // Dim the box back down shortly after the example finishes
+                                setTimeout(() => {
+                                    if (activeExBox) {
+                                        activeExBox.classList.remove('ring-2', 'ring-ttnActionOrange', 'bg-orange-50', 'shadow-md');
+                                        activeExBox.classList.add('bg-slate-50', 'border-slate-200');
+                                    }
+                                }, 1500); 
+                            };
+                        }
+                    }, 1200); // 1.2-second pause before example begins
                 };
             }
         }
