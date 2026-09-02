@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Four Core Skills: OARS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ttnNavy: '#0C2340',
+                        ttnTrustBlue: '#005EB8',
+                        ttnActionOrange: '#FE5000',
+                        ttnSlate: '#333F48',
+                        ttnIceBlue: '#DBE2E9'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-transparent m-0 p-4 md:p-8 font-sans text-ttnSlate antialiased w-full h-full flex flex-col justify-center">
+
+    <div class="max-w-5xl mx-auto w-full space-y-8">
+        
+        <!-- Header Section -->
+        <div class="text-center space-y-3">
+            <h2 class="text-4xl font-bold text-ttnNavy tracking-tight">The Four Core Skills: OARS</h2>
+            <p class="text-lg text-slate-600">This is how Partnership, Acceptance, Compassion, and Evocation actually get said out loud.</p>
+        </div>
+
+        <!-- Interactive Tabbed Container -->
+        <div class="w-full border border-slate-300 rounded-xl overflow-hidden shadow-sm bg-[#eaf2fb]">
+            
+            <!-- Tab Navigation -->
+            <div class="flex flex-row border-b border-slate-300">
+                <button onclick="switchTab('O')" id="tab-O" class="flex-1 py-4 px-2 text-center font-medium transition-colors border-r border-slate-300 bg-white text-ttnTrustBlue border-t-4 border-t-ttnTrustBlue">
+                    O — Open Questions
+                </button>
+                <button onclick="switchTab('A')" id="tab-A" class="flex-1 py-4 px-2 text-center font-medium transition-colors border-r border-slate-300 text-slate-600 hover:bg-white/50 hover:text-ttnNavy border-t-4 border-t-transparent">
+                    A — Affirmations
+                </button>
+                <button onclick="switchTab('R')" id="tab-R" class="flex-1 py-4 px-2 text-center font-medium transition-colors border-r border-slate-300 text-slate-600 hover:bg-white/50 hover:text-ttnNavy border-t-4 border-t-transparent">
+                    R — Reflections
+                </button>
+                <button onclick="switchTab('S')" id="tab-S" class="flex-1 py-4 px-2 text-center font-medium transition-colors text-slate-600 hover:bg-white/50 hover:text-ttnNavy border-t-4 border-t-transparent">
+                    S — Summaries
+                </button>
+            </div>
+
+            <!-- Tab Content Area -->
+            <div class="p-8 md:p-12 min-h-[200px] flex flex-col justify-center transition-all duration-300">
+                
+                <div id="content-O" class="content-panel space-y-4">
+                    <p class="text-xl text-slate-700">Can't be answered yes or no.</p>
+                    <p class="text-xl text-slate-700">They invite your patient to talk, and to think out loud while they do it.</p>
+                </div>
+
+                <div id="content-A" class="content-panel space-y-4 hidden">
+                    <p class="text-xl text-slate-700">Genuine recognition of a strength or an effort.</p>
+                    <p class="text-xl text-slate-700">Not empty praise. It has to be true, and it has to be specific.</p>
+                </div>
+
+                <div id="content-R" class="content-panel space-y-4 hidden">
+                    <p class="text-xl text-slate-700">Repeat or rephrase what your patient just said.</p>
+                    <p class="text-xl text-slate-700">It proves you heard it. It also lets them hear it back, often for the first time.</p>
+                </div>
+
+                <div id="content-S" class="content-panel space-y-4 hidden">
+                    <p class="text-xl text-slate-700">Gather several threads of what's been said into one short recap.</p>
+                    <p class="text-xl text-slate-700">Often ends in another open question, keeping the conversation moving.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Audio Elements -->
+    <audio id="audio-O" src="vo_oars_o.wav"></audio>
+    <audio id="audio-A" src="vo_oars_a.wav"></audio>
+    <audio id="audio-R" src="vo_oars_r.wav"></audio>
+    <audio id="audio-S" src="vo_oars_s.wav"></audio>
+
+    <script>
+        let currentAudio = null;
+
+        function switchTab(tabId) {
+            // Stop current audio
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+
+            // Reset all tabs to inactive state
+            const tabs = ['O', 'A', 'R', 'S'];
+            tabs.forEach(id => {
+                const tabEl = document.getElementById(`tab-${id}`);
+                const contentEl = document.getElementById(`content-${id}`);
+                
+                // Style inactive tab
+                tabEl.className = `flex-1 py-4 px-2 text-center font-medium transition-colors text-slate-600 hover:bg-white/50 hover:text-ttnNavy border-t-4 border-t-transparent ${id !== 'S' ? 'border-r border-slate-300' : ''}`;
+                
+                // Hide content
+                contentEl.classList.add('hidden');
+            });
+
+            // Set active tab styling
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            activeTab.className = `flex-1 py-4 px-2 text-center font-medium transition-colors bg-white text-ttnTrustBlue border-t-4 border-t-ttnTrustBlue ${tabId !== 'S' ? 'border-r border-slate-300' : ''}`;
+            
+            // Show active content
+            document.getElementById(`content-${tabId}`).classList.remove('hidden');
+
+            // Play new audio
+            currentAudio = document.getElementById(`audio-${tabId}`);
+            if (currentAudio) {
+                currentAudio.play().catch(e => console.log("Audio playback requires user interaction first."));
+            }
+        }
+    </script>
+</body>
+</html>
